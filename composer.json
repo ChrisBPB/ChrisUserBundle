@@ -13,7 +13,6 @@
     },
     "autoload": {
         "psr-4": {
-            "vitalis\\HelloWorld\\": "src/",
             "Chris\\ChrisUserBundle\\": "ChrisUserBundle/"
         }
     },
