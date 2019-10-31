@@ -1,0 +1,22 @@
+{
+    "name": "chris/chris-user-bundle",
+    "description": "Basic user system for Symfony >4.4",
+    "type": "library",
+    "require": {
+        "php": "^7.3",
+        "symfony/framework-bundle": "^4.4",
+        "symfony/twig-bundle": "^4.4",
+        "twig/twig": "3.x-dev"
+    },
+    "require-dev": {
+        "doctrine/doctrine-bundle": "^2.0.*@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "vitalis\\HelloWorld\\": "src/",
+            "Chris\\ChrisUserBundle\\": "ChrisUserBundle/"
+        }
+    },
+    "license": "MIT",
+    "minimum-stability": "dev"
+}
