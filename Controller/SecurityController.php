@@ -33,12 +33,4 @@ class SecurityController extends AbstractController
     {
 
     }
-
-    /**
-     * @Route("/register", name="chrisuser_register")
-     */
-    public function register()
-    {
-
-    }
 }

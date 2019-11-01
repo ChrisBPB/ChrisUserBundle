@@ -3,10 +3,12 @@
 namespace Chris\ChrisUserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Chris\ChrisUserBundle\Repository\UserRepository")
+ * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
  */
 class User implements UserInterface
 {
@@ -55,6 +57,7 @@ class User implements UserInterface
 
         return $this;
     }
+
 
     /**
      * Returns the roles granted to the user.
