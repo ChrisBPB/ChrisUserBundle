@@ -1,6 +1,25 @@
-#######################
-Security.yaml:
+# Editor.md
 
+![](https://img.shields.io/github/issues/ChrisBPB/ChrisUserBundle.svg) 
+
+
+## Features
+- Login
+- Register
+- Email validation
+- Password reset
+- Profile editing
+
+## What else?
+ChrisUserBundle also utilised translations properly, and whilst only en will be provided - it is ofcourse easy to add your own.
+
+### Want to use ChrisUserBundle?
+Here are the first steps to take:
+
+
+
+>####Security.yaml:
+<pre>
 providers:
     users:
         entity:
@@ -23,26 +42,25 @@ firewalls:
             
 access_control:
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        
-#######################
+</pre>        
 
-#######################
-bundles.php
-        
+
+>####bundles.php
+<pre>        
 Chris\ChrisUserBundle\ChrisUserBundle::class => ['all' => true],
-#######################
+</pre>
 
-#######################
-routes.yaml
 
+>####routes.yaml
+<pre>
 ChrisUserBundle:
       resource: '../lib/ChrisUserBundle/Controller/'
       type:     annotation
-#######################
+</pre>
 
-#######################
-services.yaml
 
+>####services.yaml
+<pre>
 Chris\ChrisUserBundle\:
         resource: '../lib/ChrisUserBundle/*'
         exclude: '../lib/ChrisUserBundle/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
@@ -50,19 +68,16 @@ Chris\ChrisUserBundle\:
 Chris\ChrisUserBundle\Controller\:
         resource: '../lib/ChrisUserBundle/src/Controller'
         tags: ['controller.service_arguments']
-#######################
+</pre>
 
-#######################
-(wont be needed after)
-composer.json
+#>How To Get It?
+>composer require chris/chris-user-bundle
 
-"psr-4": {
-        "Chris\\ChrisUserBundle\\": "lib/ChrisUserBundle/",
-        }
-#######################
+>composer update
 
-composer update
-make migrations 
-do migrations
-clear cache
+>php bin/console make:migration
+
+>php bin/console do:migration
+
+>php bin/console cache:clear
 
