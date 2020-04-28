@@ -1,1 +1,2 @@
-Please validate your email: {{ url('chrisuser_email_validate', {code:code, email:email}) }}
+{% trans_default_domain 'ChrisUserBundle' %}
+{{ 'emails.validateRequest'|trans() }} {{ url('chrisuser_email_validate', {code:code, email:email}) }}

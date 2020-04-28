@@ -20,28 +20,28 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('username')
             ->add('agreeTerms', CheckboxType::class, [
+                'translation_domain' => 'ChrisUserBundle',
+                'label' => 'forms.registration.agreeToTerms',
                 'mapped' => true,
-                'constraints' => [
-                    new IsTrue([
-                        'message' => 'You should agree to our terms.',
-                    ]),
-                ],
             ])
             ->add('agreeMarketing', CheckboxType::class, [
+                'translation_domain' => 'ChrisUserBundle',
+                'label' => 'forms.registration.agreeToMarketing',
                 'mapped' => true,
                 'required'=>false,
             ])
             ->add('plainPassword', PasswordType::class, [
+                'translation_domain' => 'ChrisUserBundle',
+                'label' => 'forms.registration.password',
                 'mapped' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        'message' => 'forms.registration.passwordRequired',
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
+                        'minMessage' => 'forms.registration.passwordLength',
+                        'max' => 100,
                     ]),
                 ],
             ])
@@ -49,7 +49,7 @@ class RegistrationFormType extends AbstractType
                 'mapped' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter an email',
+                        'message' => 'forms.registration.emailRequired',
                     ]),
                     new Length([
                         'max' => 254,

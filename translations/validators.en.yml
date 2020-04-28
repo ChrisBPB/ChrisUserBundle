@@ -1,0 +1,4 @@
+forms:
+  registration:
+      passwordLength: Please choose password with a length of atleast {{ limit }}
+      emailRequired: Please enter an email

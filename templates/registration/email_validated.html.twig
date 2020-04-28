@@ -1,5 +1,6 @@
+{% trans_default_domain 'ChrisUserBundle' %}
 {% if success %}
-    Email Validated
+    {{ 'pages.emailValidated.success'|trans() }}
 {% else %}
-    Error, please try again.
+    {{ 'pages.emailValidated.failure'|trans }}
 {% endif %}

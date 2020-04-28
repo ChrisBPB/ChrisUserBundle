@@ -19,7 +19,7 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
-            return $this->redirectToRoute('target_path');
+         //   return $this->redirectToRoute('index');
         }
 
         // get the login error if there is one
@@ -76,7 +76,7 @@ class SecurityController extends AbstractController
                 $mailer->send($message);
 
                 $this->addFlash(
-                    'success', 'Email sent'
+                    'success', $this->get('translator')->trans('alerts.emailSent', [], 'ChrisUserBundle')
                 );
 
             }
@@ -129,7 +129,7 @@ class SecurityController extends AbstractController
                 $result = null; //error
 
                 $this->addFlash(
-                    'danger', 'Expired, please request a new link.'
+                    'danger', $this->get('translator')->trans('alerts.passwordTokenExpired', [], 'ChrisUserBundle')
                 );
             }
         }

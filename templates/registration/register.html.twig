@@ -1,9 +1,4 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Register{% endblock %}
-
-{% block body %}
-    <h1>Register</h1>
+{% trans_default_domain 'ChrisUserBundle' %}
 
     {{ form_start(registrationForm) }}
         {{ form_row(registrationForm.username) }}
@@ -12,6 +7,5 @@
         {{ form_row(registrationForm.agreeTerms) }}
         {{ form_row(registrationForm.agreeMarketing) }}
 
-        <button class="btn" type="submit">Register</button>
+        <button type="submit">{{ 'pages.register.registerButton'|trans() }}</button>
     {{ form_end(registrationForm) }}
-{% endblock %}

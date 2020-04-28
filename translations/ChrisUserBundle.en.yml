@@ -1,0 +1,33 @@
+alerts:
+    emailSent: Email has been sent.
+    passwordTokenExpired: The password token has expired, please request a new one.
+
+forms:
+    submit: Submit
+    registration:
+        agreeToTerms: You should agree to our terms.
+        agreeToMarketing: Opt in to marketing?
+        password: Choose a password
+        passwordRequired: Please enter a password
+    login:
+        username: Username
+        password: Password
+        signIn: Sign In
+
+emails:
+    validateRequest: Please validate your email:
+    resetPassword: Follow the link to reset your password:
+
+pages:
+    register:
+        registerButton: Register
+    emailValidated:
+        success: Success! Email has been validated!
+        failure: Error, please try again.
+    security:
+        forgottenPassword:
+            forgottenPassword: Enter your email for a reset link.
+        login:
+            alreadyLogged: You are already logged in as %user%, %logout%?
+        resetPassword:
+            resetPassword: Enter a new password
