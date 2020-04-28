@@ -3,12 +3,14 @@
 namespace Chris\ChrisUserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Chris\ChrisUserBundle\Repository\UserRepository")
  * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
+ * @ORM\HasLifecycleCallbacks()
  */
 class User implements UserInterface
 {
@@ -25,9 +27,49 @@ class User implements UserInterface
     private $username;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $email;
+
+    /**
      * @ORM\Column(type="string", length=72)
      */
     private $password;
+
+    /**
+     * @ORM\Column(type="string", length=48, nullable=true)
+     */
+    private $passwordToken;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $passwordTokenExpire;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $emailValidated = false;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $agreeMarketing = false;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $agreeTerms = false;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt = false;
+
+    /**
+     * @ORM\Column(type="string", length=32, nullable=true)
+     */
+    private $emailValidationCode;
 
     public function getId(): ?int
     {
@@ -58,6 +100,75 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getAgreeTerms(): ?bool
+    {
+        return $this->agreeTerms;
+    }
+
+    public function setAgreeTerms(bool $agreeTerms): self
+    {
+        $this->agreeTerms = $agreeTerms;
+
+        return $this;
+    }
+
+    public function getAgreeMarketing(): ?bool
+    {
+        return $this->agreeMarketing;
+    }
+
+    public function setAgreeMarketing(bool $agreeMarketing): self
+    {
+        $this->agreeMarketing = $agreeMarketing;
+
+        return $this;
+    }
+
+    public function setEmailValidationCode(String $emailValidationCode): self
+    {
+        $this->emailValidationCode = $emailValidationCode;
+
+        return $this;
+    }
+
+    public function getEmailValidationCode(): ?string
+    {
+        return $this->emailValidationCode;
+    }
+
+    public function setEmailValidated(bool $emailValidated): self
+    {
+        $this->emailValidated = $emailValidated;
+
+        return $this;
+    }
+
+    public function getEmailValidated(): ?bool
+    {
+        return $this->emailValidated;
+    }
+
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        $this->createdAt = new \DateTime();
+        $this->emailValidationCode = md5(uniqid());
+    }
 
     /**
      * Returns the roles granted to the user.
@@ -99,5 +210,41 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    public function getPasswordToken(): ?string
+    {
+        return $this->passwordToken;
+    }
+
+    public function setPasswordToken(string $passwordToken): self
+    {
+        $this->passwordToken = $passwordToken;
+
+        return $this;
+    }
+
+    public function getPasswordTokenExpire(): ?\DateTimeInterface
+    {
+        return $this->passwordTokenExpire;
+    }
+
+    public function setPasswordTokenExpire(\DateTimeInterface $passwordTokenExpire): self
+    {
+        $this->passwordTokenExpire = $passwordTokenExpire;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
     }
 }

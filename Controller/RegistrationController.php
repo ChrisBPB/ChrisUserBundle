@@ -17,7 +17,7 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/register", name="chrisuser_register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator): Response
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator, \Swift_Mailer $mailer): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -36,7 +36,20 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // do anything else you need here, like send an email
+            $message = (new \Swift_Message('Register Validate'))
+                ->setFrom("sponsor@powerbot.org")
+                ->setTo(trim($user->getEmail()))
+                ->setBody(
+                    $this->renderView(
+                        '@ChrisUser/emails/email_validate.html.twig',
+                        ['code' => $user->getEmailValidationCode(),
+                            'email'=>$user->getEmail()
+                        ]
+                    ),
+                    'text/html'
+                );
+
+            $mailer->send($message);
 
             return $guardHandler->authenticateUserAndHandleSuccess(
                 $user,
@@ -47,7 +60,40 @@ class RegistrationController extends AbstractController
         }
 
         return $this->render('@ChrisUser/registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
+            'registrationForm' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/register/email-validate/{code}/{email}", name="chrisuser_email_validate")
+     */
+    public function validateEmail(string $code, string $email){
+        $code = trim($code);
+        $email = trim($email);
+
+        $qb = $this->container->get('doctrine')->getManager()->createQueryBuilder();
+        $qb->update('ChrisUserBundle:User', 'u');
+        $qb->set('u.emailValidated', 1);
+        $qb->set('u.emailValidationCode', null);
+        $qb->where('u.email = :email AND u.emailValidationCode=:code');
+        $qb->setParameter(':email', $email);
+        $qb->setParameter(':code', $code);
+        $result = $qb->getQuery()->execute();
+
+        if($result == 0){
+            //failed, why? Possibly already validated
+            $qb = $this->container->get('doctrine')->getManager()->createQueryBuilder();
+            $qb->select('u.id');
+            $qb->from('ChrisUserBundle:User', 'u');
+            $qb->where('u.email=:email');
+            $qb->setMaxResults(1);
+            $qb->setParameter(':email', $email);
+            $result = $qb->getQuery()->getSingleResult();
+        }
+
+        return $this->render('@ChrisUser/registration/email_validated.html.twig', [
+            "success"=>$result>0
+        ]);
+
     }
 }

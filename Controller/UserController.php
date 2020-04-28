@@ -12,8 +12,6 @@ class UserController extends AbstractController
 
     /**
      * TODO:
-     *      login
-     *      register
      *      forgotten password
      *      change password
      *      view profile
