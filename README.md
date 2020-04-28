@@ -1,4 +1,4 @@
-# Editor.md
+# ChrisUserBundle
 
 ![](https://img.shields.io/github/issues/ChrisBPB/ChrisUserBundle.svg) 
 
