@@ -1,0 +1,5 @@
+services:
+    Chris\ChrisUserBundle\EventListener\AccessListener:
+        tags:
+        - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+        arguments: ['@security.authorization_checker', '@router.default', '@request_stack', '@security.token_storage']

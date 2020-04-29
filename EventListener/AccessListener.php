@@ -27,6 +27,7 @@ class AccessListener
 
     public function onKernelRequest(RequestEvent $event)
     {
+        
         $routeName = $this->req->getCurrentRequest()->get('_route');
 
         if($event->isMasterRequest() && substr($routeName, 0, 1 ) != "_") {

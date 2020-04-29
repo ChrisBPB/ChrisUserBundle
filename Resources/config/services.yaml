@@ -1,0 +1,21 @@
+parameters:
+
+services:
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    Chris\ChrisUserBundle\:
+        resource: '../../../ChrisUserBundle/*'
+        exclude: '../../../ChrisUserBundle/{DependencyInjection,Entity,Migrations,Tests,Kernel.php,Security}'
+
+    Chris\ChrisUserBundle\Security\LoginFormAuthenticator:
+        arguments: ['@doctrine.orm.default_entity_manager', '@router.default', '@security.csrf.token_manager', '@security.user_password_encoder.generic']
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    Chris\ChrisUserBundle\Controller\:
+        resource: '../../../ChrisUserBundle/Controller'
+        tags: ['controller.service_arguments']
+
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
