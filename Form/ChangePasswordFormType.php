@@ -14,53 +14,40 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class RegistrationFormType extends AbstractType
+class ChangePasswordFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username')
-            ->add('agreeTerms', CheckboxType::class, [
+            ->add('existingPassword', PasswordType::class, [
                 'translation_domain' => 'ChrisUserBundle',
-                'label' => 'forms.registration.agreeToTerms',
-                'mapped' => true,
-            ])
-            ->add('agreeMarketing', CheckboxType::class, [
-                'translation_domain' => 'ChrisUserBundle',
-                'label' => 'forms.registration.agreeToMarketing',
-                'mapped' => true,
-                'required'=>false,
+                'label' => 'forms.changePassword.existingPassword',
+                'mapped' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'forms.changePassword.passwordRequired',
+                    ])
+                ]
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'type'=>PasswordType::class,
                 'translation_domain' => 'ChrisUserBundle',
-                'invalid_message' => 'forms.registration.passwordMismatch',
+                'invalid_message' => 'forms.changePassword.passwordMismatch',
                 'first_options' => [
-                    'label' => 'forms.registration.password',
+                    'label' => 'forms.changePassword.password',
                 ],
                 'second_options' => [
-                    'label' => 'forms.registration.repeatPassword',
+                    'label' => 'forms.changePassword.repeatPassword',
                 ],
                 'mapped' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'forms.registration.passwordRequired',
+                        'message' => 'forms.changePassword.passwordRequired',
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'forms.registration.passwordLength',
+                        'minMessage' => 'forms.changePassword.passwordLength',
                         'max' => 100,
-                    ]),
-                ],
-            ])
-            ->add('email', EmailType::class, [
-                'mapped' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'forms.registration.emailRequired',
-                    ]),
-                    new Length([
-                        'max' => 254,
                     ]),
                 ],
             ])

@@ -5,6 +5,7 @@ namespace Chris\ChrisUserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -12,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
  * @ORM\HasLifecycleCallbacks()
  */
-class User implements UserInterface
+class User implements UserInterface, EquatableInterface
 {
     /**
      * @ORM\Id()
@@ -20,6 +21,11 @@ class User implements UserInterface
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
 
     /**
      * @ORM\Column(type="string", length=32)
@@ -164,10 +170,11 @@ class User implements UserInterface
     /**
      * @ORM\PrePersist
      */
-    public function setCreatedAtValue()
+    public function onPre()
     {
         $this->createdAt = new \DateTime();
         $this->emailValidationCode = md5(uniqid());
+        $this->setRoles(['ROLE_PENDING']);
     }
 
     /**
@@ -186,7 +193,11 @@ class User implements UserInterface
      */
     public function getRoles()
     {
-        return [];
+
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
     /**
@@ -246,5 +257,64 @@ class User implements UserInterface
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    public function hasRole(string $role): bool
+    {
+        if(in_array($role, $this->roles)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function addRole(string $role): self
+    {
+        $this->roles = $role;
+
+        return $this;
+    }
+
+    public function removeRole(string $role): self
+    {
+        $roles = $this->roles;
+        $del = array($role);
+        $new = array_values(array_diff($roles,$del));
+        $this->roles = $new;
+
+        return $this;
+    }
+
+
+    /**
+     * The equality comparison should neither be done by referential equality
+     * nor by comparing identities (i.e. getId() === getId()).
+     *
+     * However, you do not need to compare every attribute, but only those that
+     * are relevant for assessing whether re-authentication is required.
+     *
+     * @return bool
+     */
+    public function isEqualTo(UserInterface $user)
+    {
+        if ($user instanceof User) {
+        // Check that the roles are the same, in any order
+        $isEqual = count($this->getRoles()) == count($user->getRoles());
+        if ($isEqual) {
+            foreach($this->getRoles() as $role) {
+                $isEqual = $isEqual && in_array($role, $user->getRoles());
+            }
+        }
+        return $isEqual;
+    }
+
+        return false;
     }
 }

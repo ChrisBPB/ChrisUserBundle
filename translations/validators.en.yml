@@ -2,3 +2,8 @@ forms:
   registration:
       passwordLength: Please choose password with a length of atleast {{ limit }}
       emailRequired: Please enter an email
+      passwordMismatch: The passwords do not match.
+  changePassword:
+      passwordLength: Please choose password with a length of atleast {{ limit }}
+      emailRequired: Please enter an email
+      passwordMismatch: The passwords do not match.

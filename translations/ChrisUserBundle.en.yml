@@ -1,6 +1,11 @@
 alerts:
     emailSent: Email has been sent.
     passwordTokenExpired: The password token has expired, please request a new one.
+    passwordChanged: The password has been changed.
+    passwordChangeError: Password not changed.
+    registrationError: Error, please try again.
+    registrationSuccess: Success, you're registered!
+    emailValidated: Email already validated!
 
 forms:
     submit: Submit
@@ -8,11 +13,16 @@ forms:
         agreeToTerms: You should agree to our terms.
         agreeToMarketing: Opt in to marketing?
         password: Choose a password
+        repeatPassword: Repeat Password
         passwordRequired: Please enter a password
     login:
         username: Username
         password: Password
         signIn: Sign In
+    changePassword:
+        existingPassword: Existing Password
+        password: Choose a password
+        repeatPassword: Repeat Password
 
 emails:
     validateRequest: Please validate your email:
@@ -21,6 +31,7 @@ emails:
 pages:
     register:
         registerButton: Register
+        emailPending: Please check your email.
     emailValidated:
         success: Success! Email has been validated!
         failure: Error, please try again.

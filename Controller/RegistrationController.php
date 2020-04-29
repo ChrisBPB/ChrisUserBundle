@@ -9,15 +9,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RegistrationController extends AbstractController
 {
     /**
      * @Route("/register", name="chrisuser_register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator, \Swift_Mailer $mailer): Response
+    public function register(TranslatorInterface $translator, Request $request, AuthorizationCheckerInterface $auth, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator, \Swift_Mailer $mailer): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -51,17 +53,44 @@ class RegistrationController extends AbstractController
 
             $mailer->send($message);
 
-            return $guardHandler->authenticateUserAndHandleSuccess(
+            $guardHandler->authenticateUserAndHandleSuccess(
                 $user,
                 $request,
                 $authenticator,
                 'main' // firewall name in security.yaml
             );
+
+            if($auth->isGranted("ROLE_USER")){
+                $this->addFlash(
+                    'danger', $translator->trans('alerts.registrationSuccess', [], 'ChrisUserBundle')
+                );
+                return $this->redirectToRoute('chrisuser_email_pending');
+            } else {
+                $this->addFlash(
+                    'danger', $translator->trans('alerts.registrationError', [], 'ChrisUserBundle')
+                );
+                return $this->redirectToRoute('chrisuser_logout');
+            }
         }
 
         return $this->render('@ChrisUser/registration/register.html.twig', [
             'registrationForm' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/register/email-pending", name="chrisuser_email_pending")
+     */
+    public function emailPending(TranslatorInterface $translator){
+        if($this->getUser()->getEmailValidated()){
+            $this->addFlash(
+                'danger', $translator->trans('alerts.emailValidated', [], 'ChrisUserBundle')
+            );
+            return $this->redirectToRoute('index');
+        } else {
+            return $this->render('@ChrisUser/registration/email_pending.html.twig', [
+            ]);
+        }
     }
 
     /**
@@ -72,23 +101,25 @@ class RegistrationController extends AbstractController
         $email = trim($email);
 
         $qb = $this->container->get('doctrine')->getManager()->createQueryBuilder();
-        $qb->update('ChrisUserBundle:User', 'u');
-        $qb->set('u.emailValidated', 1);
-        $qb->set('u.emailValidationCode', null);
-        $qb->where('u.email = :email AND u.emailValidationCode=:code');
+        $qb->select('u');
+        $qb->from('ChrisUserBundle:User', 'u');
+        $qb->where('u.email=:email');
+        $qb->setMaxResults(1);
         $qb->setParameter(':email', $email);
-        $qb->setParameter(':code', $code);
-        $result = $qb->getQuery()->execute();
+        $user = $qb->getQuery()->getSingleResult();
+        $result = 1;
 
-        if($result == 0){
-            //failed, why? Possibly already validated
-            $qb = $this->container->get('doctrine')->getManager()->createQueryBuilder();
-            $qb->select('u.id');
-            $qb->from('ChrisUserBundle:User', 'u');
-            $qb->where('u.email=:email');
-            $qb->setMaxResults(1);
-            $qb->setParameter(':email', $email);
-            $result = $qb->getQuery()->getSingleResult();
+        if(!$user->getEmailValidated()){
+            if($user->getEmailValidationCode()==$code){
+                $em = $this->container->get('doctrine')->getManager();
+                $user->setEmailValidated(true);
+                $user->setEmailValidationCode("");
+                $user->removeRole("ROLE_PENDING");
+                $em->persist($user);
+                $em->flush();
+            } else {
+                $result = 0;
+            }
         }
 
         return $this->render('@ChrisUser/registration/email_validated.html.twig', [
