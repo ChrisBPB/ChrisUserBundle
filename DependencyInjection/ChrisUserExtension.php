@@ -23,8 +23,6 @@ class ChrisUserExtension extends Extension
 
         $emailValidation = $config['email_validation'];
 
-
-        echo $emailValidation;
         $loader = new YamlFileLoader(
             $container,
             new FileLocator(__DIR__.'/../Resources/config')

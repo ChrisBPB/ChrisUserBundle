@@ -35,7 +35,7 @@ class AccessListener
             if ($user instanceof User && $user->hasRole('ROLE_PENDING')) {
                 $url = $this->router->generate('chrisuser_email_pending');
 
-                if($routeName != "chrisuser_email_pending" && $routeName != "chrisuser_email_validate"){
+                if($routeName != "chrisuser_email_pending" && $routeName != "chrisuser_email_validate" && $routeName != "chrisuser_change_email" && $routeName != "chrisuser_index" && $routeName != "chrisuser_resend_email"){
                    $event->setResponse(new RedirectResponse($url));
                 }
             }

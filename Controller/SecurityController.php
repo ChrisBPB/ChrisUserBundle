@@ -60,13 +60,13 @@ class SecurityController extends AbstractController
                 $em->persist($result);
                 $em->flush();
 
-                $message = (new \Swift_Message('Password Reset'))
+                $message = (new \Swift_Message($this->get('translator')->trans('emails.changePasswordTitle', [], 'ChrisUserBundle')))
                     ->setFrom("sponsor@powerbot.org")
                     ->setTo(trim($result->getEmail()))
                     ->setBody(
                         $this->renderView(
                             '@ChrisUser/emails/reset_password.html.twig',
-                            [   'code' => $result->getPasswordToken(),
+                            ['code' => $result->getPasswordToken(),
                                 'email' => $result->getEmail()
                             ]
                         ),

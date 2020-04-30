@@ -1,0 +1,8 @@
+{% trans_default_domain 'ChrisUserBundle' %}
+
+    {{ form_start(changeEmailForm) }}
+        {{ form_row(changeEmailForm.existingPassword) }}
+        {{ form_row(changeEmailForm.email) }}
+
+<button type="submit">{{ 'forms.submit'|trans() }}</button>
+{{ form_end(changeEmailForm) }}

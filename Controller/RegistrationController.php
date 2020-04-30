@@ -38,7 +38,7 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $message = (new \Swift_Message('Register Validate'))
+            $message = (new \Swift_Message($translator->trans('emails.registerTitle', [], 'ChrisUserBundle')))
                 ->setFrom("sponsor@powerbot.org")
                 ->setTo(trim($user->getEmail()))
                 ->setBody(
@@ -94,7 +94,7 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @Route("/register/email-validate/{code}/{email}", name="chrisuser_email_validate")
+     * @Route("/user/email-validate/{code}/{email}", name="chrisuser_email_validate")
      */
     public function validateEmail(string $code, string $email){
         $code = trim($code);

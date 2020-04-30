@@ -5,5 +5,12 @@ forms:
       passwordMismatch: The passwords do not match.
   changePassword:
       passwordLength: Please choose password with a length of atleast {{ limit }}
+      passwordRequired: Please enter a password
       emailRequired: Please enter an email
       passwordMismatch: The passwords do not match.
+  changeEmail:
+    emailLength: Please choose password with a length of atleast {{ limit }}
+    emailRequired: Please enter an email
+    emailMismatch: The emails do not match.
+    password: Enter your password
+    passwordRequired: Password required

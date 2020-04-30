@@ -177,6 +177,14 @@ class User implements UserInterface, EquatableInterface
         $this->setRoles(['ROLE_PENDING']);
     }
 
+    public function performEmailChange(string $email)
+    {
+        $this->email = trim($email);
+        $this->emailValidated = false;
+        $this->emailValidationCode = md5(uniqid());
+        $this->setRoles(['ROLE_PENDING']);
+    }
+
     /**
      * Returns the roles granted to the user.
      *

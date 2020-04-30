@@ -1,0 +1,13 @@
+{% trans_default_domain 'ChrisUserBundle' %}
+{% for label, flashes in app.session.flashbag.all %}
+    {% for flash in flashes %}
+        <div class="alert alert-{{ label }}">
+            {{ flash }}
+        </div>
+    {% endfor %}
+{% endfor %}
+{{ 'pages.profile.email'|trans({'%email%':app.user.email, '%path%':path('chrisuser_change_email')})|raw }} <br/>
+{{ 'pages.profile.password'|trans({'%path%':path('chrisuser_change_password')})|raw }}<br />
+{% if not app.user.emailValidated %}
+    {{ 'pages.profile.resendEmail'|trans({'%path%':path('chrisuser_resend_email')})|raw }}
+{% endif %}

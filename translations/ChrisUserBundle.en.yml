@@ -3,9 +3,13 @@ alerts:
     passwordTokenExpired: The password token has expired, please request a new one.
     passwordChanged: The password has been changed.
     passwordChangeError: Password not changed.
+    emailChanged: The email has been changed.
+    emailChangeError: The email was not changed.
     registrationError: Error, please try again.
     registrationSuccess: Success, you're registered!
     emailValidated: Email already validated!
+    emailResendNotRequired: Your email is already verified
+    emailResendRapid: You have already been sent an email recently.
 
 forms:
     submit: Submit
@@ -23,12 +27,28 @@ forms:
         existingPassword: Existing Password
         password: Choose a password
         repeatPassword: Repeat Password
+    changeEmail:
+        existingEmail: Existing email
+        email: Choose a new email
+        repeatEmail: Repeat new email
+        existingPassword: Existing password
 
 emails:
     validateRequest: Please validate your email:
     resetPassword: Follow the link to reset your password:
+    registerTitle: Welcome! Please verify your email
+    changeEmailTitle: Email Changed, please validate.
+    changePasswordTitle: Forgotten Password Request
+    verifyEmailTitle: Please verify your email
 
 pages:
+    profile:
+        email:      |
+                    Current Email: %email% - <a href="%path%">Change Email?</a>
+        password:   |
+                    Current Password: ________ - <a href="%path%">Change Password?</a>
+        resendEmail:   |
+                        <a href="%path%">Resend Email Validation?</a>
     register:
         registerButton: Register
         emailPending: Please check your email.
