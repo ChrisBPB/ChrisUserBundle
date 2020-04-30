@@ -33,6 +33,18 @@ class ChrisUserExtension extends Extension
             $loader->load('email_validator.yaml');
         }
 
+        $userControllerDefinition = $container->getDefinition('Chris\ChrisUserBundle\Controller\UserController');
+        $userControllerDefinition->setArgument(0, $config['user_class']);
+
+        $registrationControllerDefinition = $container->getDefinition('Chris\ChrisUserBundle\Controller\RegistrationController');
+        $registrationControllerDefinition->setArgument(0, $config['user_class']);
+
+        $securityControllerDefinition = $container->getDefinition('Chris\ChrisUserBundle\Controller\SecurityController');
+        $securityControllerDefinition->setArgument(0, $config['user_class']);
+
+        $loginFormAuthenticatorDefinition = $container->getDefinition('Chris\ChrisUserBundle\Security\LoginFormAuthenticator');
+        $loginFormAuthenticatorDefinition->setArgument(4, $config['user_class']);
+
 
     }
 

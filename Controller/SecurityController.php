@@ -13,6 +13,14 @@ use Symfony\Component\Validator\Constraints\Date;
 
 class SecurityController extends AbstractController
 {
+
+    private $user_class;
+
+    public function __construct($user_class)
+    {
+        $this->user_class = $user_class;
+    }
+
     /**
      * @Route("/login", name="chrisuser_login")
      */
@@ -43,7 +51,7 @@ class SecurityController extends AbstractController
         if($email != null) {
             $qb = $this->container->get('doctrine')->getManager()->createQueryBuilder();
             $qb->select('u');
-            $qb->from('ChrisUserBundle:User', 'u');
+            $qb->from($this->user_class, 'u');
             $qb->where('u.email=:email');
             $qb->setMaxResults(1);
             $qb->setParameter(':email', trim($email));

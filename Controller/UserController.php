@@ -16,13 +16,12 @@ use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 class UserController extends AbstractController
 {
 
-    /**
-     * TODO:
-     *      change password
-     *      view profile
-     *      edit profile
-     *      roles ?
-     */
+    private $user_class;
+
+    public function __construct($user_class)
+    {
+        $this->user_class = $user_class;
+    }
 
     /**
      * @Route("/user", name="chrisuser_index")

@@ -12,9 +12,22 @@ services:
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
-    Chris\ChrisUserBundle\Controller\:
-        resource: '../../../ChrisUserBundle/Controller'
+    #Chris\ChrisUserBundle\Controller\:
+    #    resource: '../../../ChrisUserBundle/Controller'
+    #    tags: ['controller.service_arguments']
+
+    Chris\ChrisUserBundle\Controller\UserController:
+        arguments: []
         tags: ['controller.service_arguments']
+
+    Chris\ChrisUserBundle\Controller\RegistrationController:
+        arguments: []
+        tags: ['controller.service_arguments']
+
+    Chris\ChrisUserBundle\Controller\SecurityController:
+        arguments: []
+        tags: ['controller.service_arguments']
+
 
 
     # add more service definitions when explicit configuration is needed

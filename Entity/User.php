@@ -2,18 +2,14 @@
 
 namespace Chris\ChrisUserBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="Chris\ChrisUserBundle\Repository\UserRepository")
- * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
- * @ORM\HasLifecycleCallbacks()
- */
-class User implements UserInterface, EquatableInterface
+
+abstract class User implements UserInterface, EquatableInterface
 {
     /**
      * @ORM\Id()
@@ -25,57 +21,57 @@ class User implements UserInterface, EquatableInterface
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    protected $roles = [];
 
     /**
      * @ORM\Column(type="string", length=32)
      */
-    private $username;
+    protected $username;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $email;
+    protected $email;
 
     /**
      * @ORM\Column(type="string", length=72)
      */
-    private $password;
+    protected $password;
 
     /**
      * @ORM\Column(type="string", length=48, nullable=true)
      */
-    private $passwordToken;
+    protected $passwordToken;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $passwordTokenExpire;
+    protected $passwordTokenExpire;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $emailValidated = false;
+    protected $emailValidated = false;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $agreeMarketing = false;
+    protected $agreeMarketing = false;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $agreeTerms = false;
+    protected $agreeTerms = false;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $createdAt = false;
+    protected $createdAt = false;
 
     /**
      * @ORM\Column(type="string", length=32, nullable=true)
      */
-    private $emailValidationCode;
+    protected $emailValidationCode;
 
     public function getId(): ?int
     {

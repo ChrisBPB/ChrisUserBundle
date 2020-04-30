@@ -25,8 +25,11 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder('chris_user');
         $treeBuilder->getRootNode()
             ->children()
-                ->booleanNode('email_validation')
+                ->booleanNode('email_validation')->end()
+                ->scalarNode('user_class')->defaultValue('App\Entity\User')->end()
             ->end();
+
+
 
         return $treeBuilder;
     }

@@ -2,7 +2,6 @@
 
 namespace Chris\ChrisUserBundle\Controller;
 
-use Chris\ChrisUserBundle\Entity\User;
 use Chris\ChrisUserBundle\Form\RegistrationFormType;
 use Chris\ChrisUserBundle\Security\LoginFormAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,12 +15,20 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RegistrationController extends AbstractController
 {
+
+    private $user_class;
+
+    public function __construct($user_class)
+    {
+        $this->user_class = $user_class;
+    }
+
     /**
      * @Route("/register", name="chrisuser_register")
      */
     public function register(TranslatorInterface $translator, Request $request, AuthorizationCheckerInterface $auth, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator, \Swift_Mailer $mailer): Response
     {
-        $user = new User();
+        $user = new $this->user_class;
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
@@ -102,7 +109,7 @@ class RegistrationController extends AbstractController
 
         $qb = $this->container->get('doctrine')->getManager()->createQueryBuilder();
         $qb->select('u');
-        $qb->from('ChrisUserBundle:User', 'u');
+        $qb->from($this->user_class, 'u');
         $qb->where('u.email=:email');
         $qb->setMaxResults(1);
         $qb->setParameter(':email', $email);
