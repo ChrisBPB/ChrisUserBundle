@@ -1,0 +1,7 @@
+{% trans_default_domain 'ChrisUserBundle' %}
+
+    {{ form_start(changeMarketingForm) }}
+        {{ form_row(changeMarketingForm.agreeMarketing) }}
+
+<button type="submit">{{ 'forms.submit'|trans() }}</button>
+{{ form_end(changeMarketingForm) }}

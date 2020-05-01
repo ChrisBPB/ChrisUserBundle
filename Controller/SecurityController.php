@@ -68,6 +68,11 @@ class SecurityController extends AbstractController
                 $em->persist($result);
                 $em->flush();
 
+
+                $this->addFlash(
+                    'success', $this->get('translator')->trans('alerts.emailSent', [], 'ChrisUserBundle')
+                );
+
                 $message = (new \Swift_Message($this->get('translator')->trans('emails.changePasswordTitle', [], 'ChrisUserBundle')))
                     ->setFrom("sponsor@powerbot.org")
                     ->setTo(trim($result->getEmail()))
@@ -83,9 +88,7 @@ class SecurityController extends AbstractController
 
                 $mailer->send($message);
 
-                $this->addFlash(
-                    'success', $this->get('translator')->trans('alerts.emailSent', [], 'ChrisUserBundle')
-                );
+                return $this->redirectToRoute('index');
 
             }
         }
@@ -104,7 +107,7 @@ class SecurityController extends AbstractController
 
         $qb = $this->container->get('doctrine')->getManager()->createQueryBuilder();
         $qb->select('u');
-        $qb->from('ChrisUserBundle:User', 'u');
+        $qb->from($this->user_class, 'u');
         $qb->where('u.email=:email AND u.passwordToken=:code');
         $qb->setMaxResults(1);
         $qb->setParameter(':email', $email);
@@ -128,6 +131,12 @@ class SecurityController extends AbstractController
                     $result->setPasswordTokenExpire(new \DateTime("-1 hour")); //immediately invalidate
                     $em->persist($result);
                     $em->flush();
+
+                    $this->addFlash(
+                        'success', $this->get('translator')->trans('alerts.passwordChanged', [], 'ChrisUserBundle')
+                    );
+
+                    return $this->redirectToRoute('index');
 
                 } else {
                     $result = null; //error

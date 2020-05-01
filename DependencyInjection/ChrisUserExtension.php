@@ -38,6 +38,7 @@ class ChrisUserExtension extends Extension
 
         $registrationControllerDefinition = $container->getDefinition('Chris\ChrisUserBundle\Controller\RegistrationController');
         $registrationControllerDefinition->setArgument(0, $config['user_class']);
+        $registrationControllerDefinition->setArgument(1, $config['register_form_class']);
 
         $securityControllerDefinition = $container->getDefinition('Chris\ChrisUserBundle\Controller\SecurityController');
         $securityControllerDefinition->setArgument(0, $config['user_class']);

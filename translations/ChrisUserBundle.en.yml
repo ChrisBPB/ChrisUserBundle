@@ -49,6 +49,8 @@ pages:
                     Current Password: ________ - <a href="%path%">Change Password?</a>
         resendEmail:   |
                         <a href="%path%">Resend Email Validation?</a>
+        marketing:   |
+                    Email Marketing: %true% - <a href="%path%">Change?</a>
     register:
         registerButton: Register
         emailPending: Please check your email.

@@ -8,6 +8,7 @@
 {% endfor %}
 {{ 'pages.profile.email'|trans({'%email%':app.user.email, '%path%':path('chrisuser_change_email')})|raw }} <br/>
 {{ 'pages.profile.password'|trans({'%path%':path('chrisuser_change_password')})|raw }}<br />
+{{ 'pages.profile.marketing'|trans({'%true%':app.user.agreeMarketing?"Yes":"No", '%path%':path('chrisuser_opt_marketing')})|raw }}<br />
 {% if not app.user.emailValidated %}
     {{ 'pages.profile.resendEmail'|trans({'%path%':path('chrisuser_resend_email')})|raw }}
 {% endif %}

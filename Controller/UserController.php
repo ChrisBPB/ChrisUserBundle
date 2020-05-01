@@ -5,6 +5,7 @@ namespace Chris\ChrisUserBundle\Controller;
 
 use Chris\ChrisUserBundle\Form\ChangeEmailFormType;
 use Chris\ChrisUserBundle\Form\ChangePasswordFormType;
+use Chris\ChrisUserBundle\Form\MarketingFormType;
 use Chris\ChrisUserBundle\Security\LoginFormAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -71,6 +72,33 @@ class UserController extends AbstractController
         }
         return $this->redirectToRoute('chrisuser_index');
 
+    }
+
+    /**
+     * @Route("/user/email-settings", name="chrisuser_opt_marketing")
+     */
+    public function optMarketing(Request $request){
+        $user = $this->getUser();
+
+        $form = $this->createForm(MarketingFormType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $marketing = $form->get('agreeMarketing')->getData();
+
+            $user->setAgreeMarketing($marketing);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            $this->addFlash(
+                'success', $this->get('translator')->trans('alerts.marketingPreferences', [], 'ChrisUserBundle')
+            );
+            return $this->redirectToRoute('chrisuser_index');
+        }
+
+        return $this->render('@ChrisUser/user/change_marketing.html.twig', [
+            'changeMarketingForm' => $form->createView()
+        ]);
     }
 
     /**

@@ -27,6 +27,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->booleanNode('email_validation')->end()
                 ->scalarNode('user_class')->defaultValue('App\Entity\User')->end()
+                ->scalarNode('register_form_class')->defaultValue('App\Form\RegistrationFormType')->end()
             ->end();
 
 

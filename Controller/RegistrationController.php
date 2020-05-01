@@ -16,11 +16,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class RegistrationController extends AbstractController
 {
 
-    private $user_class;
+    private $user_class, $form;
 
-    public function __construct($user_class)
+    public function __construct($user_class, $form)
     {
         $this->user_class = $user_class;
+        $this->form = $form;
     }
 
     /**
@@ -29,7 +30,7 @@ class RegistrationController extends AbstractController
     public function register(TranslatorInterface $translator, Request $request, AuthorizationCheckerInterface $auth, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator, \Swift_Mailer $mailer): Response
     {
         $user = new $this->user_class;
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm($this->form, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
