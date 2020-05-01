@@ -90,7 +90,7 @@ class RegistrationController extends AbstractController
      * @Route("/register/email-pending", name="chrisuser_email_pending")
      */
     public function emailPending(TranslatorInterface $translator){
-        if($this->getUser()->getEmailValidated()){
+        if($this->getUser() != null && $this->getUser()->getEmailValidated()){
             $this->addFlash(
                 'danger', $translator->trans('alerts.emailValidated', [], 'ChrisUserBundle')
             );
@@ -114,7 +114,7 @@ class RegistrationController extends AbstractController
         $qb->where('u.email=:email');
         $qb->setMaxResults(1);
         $qb->setParameter(':email', $email);
-        $user = $qb->getQuery()->getSingleResult();
+        $user = $qb->getQuery()->useQueryCache(true)->useResultCache(false)->getSingleResult();
         $result = 1;
 
         if(!$user->getEmailValidated()){

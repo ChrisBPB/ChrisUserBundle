@@ -55,7 +55,7 @@ class SecurityController extends AbstractController
             $qb->where('u.email=:email');
             $qb->setMaxResults(1);
             $qb->setParameter(':email', trim($email));
-            $result = $qb->getQuery()->getSingleResult();
+            $result = $qb->getQuery()->useQueryCache(true)->useResultCache(false)->getSingleResult();
 
             if ($result != null) {
                 $em = $this->container->get('doctrine')->getManager();
@@ -112,7 +112,7 @@ class SecurityController extends AbstractController
         $qb->setMaxResults(1);
         $qb->setParameter(':email', $email);
         $qb->setParameter(':code', $code);
-        $result = $qb->getQuery()->getSingleResult();
+        $result = $qb->getQuery()->useQueryCache(true)->useResultCache(false)->getSingleResult();
 
         if($result!=null){
 
