@@ -4,6 +4,7 @@ namespace Chris\ChrisUserBundle\Controller;
 
 use Chris\ChrisUserBundle\Form\RegistrationFormType;
 use Chris\ChrisUserBundle\Security\LoginFormAuthenticator;
+use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -114,10 +115,15 @@ class RegistrationController extends AbstractController
         $qb->where('u.email=:email');
         $qb->setMaxResults(1);
         $qb->setParameter(':email', $email);
-        $user = $qb->getQuery()->useQueryCache(true)->useResultCache(false)->getSingleResult();
-        $result = 1;
+        try {
+            $user = $qb->getQuery()->useQueryCache(true)->useResultCache(false)->getSingleResult();
+            $result = 1;
+        } catch (NoResultException $e) {
+            $user = null;
+            $result = 0;
+        }
 
-        if(!$user->getEmailValidated()){
+        if($user!=null && !$user->getEmailValidated()){
             if($user->getEmailValidationCode()==$code){
                 $em = $this->container->get('doctrine')->getManager();
                 $user->setEmailValidated(true);

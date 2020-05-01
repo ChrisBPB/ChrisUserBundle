@@ -2,6 +2,7 @@
 
 namespace Chris\ChrisUserBundle\Controller;
 
+use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,7 +56,11 @@ class SecurityController extends AbstractController
             $qb->where('u.email=:email');
             $qb->setMaxResults(1);
             $qb->setParameter(':email', trim($email));
+            try{
             $result = $qb->getQuery()->useQueryCache(true)->useResultCache(false)->getSingleResult();
+            } catch (NoResultException $e) {
+                $result = null;
+            }
 
             if ($result != null) {
                 $em = $this->container->get('doctrine')->getManager();
@@ -112,7 +117,11 @@ class SecurityController extends AbstractController
         $qb->setMaxResults(1);
         $qb->setParameter(':email', $email);
         $qb->setParameter(':code', $code);
+        try{
         $result = $qb->getQuery()->useQueryCache(true)->useResultCache(false)->getSingleResult();
+        } catch (NoResultException $e) {
+            $result = null;
+        }
 
         if($result!=null){
 
