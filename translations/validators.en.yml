@@ -1,4 +1,7 @@
 forms:
+  length: This field needs to be atleast {{ limit }} characters
+  lengthX: This field is too long
+  required: This field is required
   registration:
       passwordLength: Please choose password with a length of atleast {{ limit }}
       emailRequired: Please enter an email

@@ -16,19 +16,6 @@ services:
     #    resource: '../../../ChrisUserBundle/Controller'
     #    tags: ['controller.service_arguments']
 
-    Chris\ChrisUserBundle\Controller\UserController:
-        arguments: []
-        tags: ['controller.service_arguments']
-
-    Chris\ChrisUserBundle\Controller\RegistrationController:
-        arguments: []
-        tags: ['controller.service_arguments']
-
-    Chris\ChrisUserBundle\Controller\SecurityController:
-        arguments: []
-        tags: ['controller.service_arguments']
-
-
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

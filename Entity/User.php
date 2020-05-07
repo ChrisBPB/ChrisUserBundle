@@ -29,6 +29,11 @@ abstract class User implements UserInterface, EquatableInterface
     protected $username;
 
     /**
+     * @ORM\Column(type="string", length=45)
+     */
+    protected $ip;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     protected $email;
@@ -86,6 +91,18 @@ abstract class User implements UserInterface, EquatableInterface
     public function setUsername(string $username): self
     {
         $this->username = $username;
+
+        return $this;
+    }
+
+    public function getIp(): ?string
+    {
+        return $this->ip;
+    }
+
+    public function setip(string $ip): self
+    {
+        $this->ip = $ip;
 
         return $this;
     }
@@ -178,7 +195,7 @@ abstract class User implements UserInterface, EquatableInterface
         $this->email = trim($email);
         $this->emailValidated = false;
         $this->emailValidationCode = md5(uniqid());
-        $this->setRoles(['ROLE_PENDING']);
+        $this->addRole(['ROLE_PENDING']);
     }
 
     /**
@@ -281,7 +298,7 @@ abstract class User implements UserInterface, EquatableInterface
 
     public function addRole(string $role): self
     {
-        $this->roles = $role;
+        $this->roles[] = $role;
 
         return $this;
     }

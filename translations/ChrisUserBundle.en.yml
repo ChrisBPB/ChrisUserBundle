@@ -12,6 +12,9 @@ alerts:
     emailResendRapid: You have already been sent an email recently.
 
 forms:
+    required: This field is required
+    length: This field must be atleast {{limit}} characters
+    lengthX: This entry is too long
     submit: Submit
     registration:
         agreeToTerms: You should agree to our terms.

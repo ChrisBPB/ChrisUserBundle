@@ -29,6 +29,8 @@ class UserController extends AbstractController
      */
     public function indexAction(Request $request)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         return $this->render('@ChrisUser/user/view_profile.html.twig', [
 
         ]);
@@ -78,6 +80,7 @@ class UserController extends AbstractController
      * @Route("/user/email-settings", name="chrisuser_opt_marketing")
      */
     public function optMarketing(Request $request){
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
 
         $form = $this->createForm(MarketingFormType::class, $user);
@@ -105,6 +108,7 @@ class UserController extends AbstractController
      * @Route("/user/change-email", name="chrisuser_change_email")
      */
     public function changeEmail(Request $request, UserPasswordEncoderInterface $passwordEncoder, \Swift_Mailer $mailer, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator){
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
 
         $form = $this->createForm(ChangeEmailFormType::class, $user);
@@ -164,7 +168,7 @@ class UserController extends AbstractController
      * @Route("/user/change-password", name="chrisuser_change_password")
      */
     public function resetPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder){
-
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
 
         $form = $this->createForm(ChangePasswordFormType::class, $user);

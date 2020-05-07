@@ -42,12 +42,13 @@ class ChangeEmailFormType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'forms.changeEmail.emailRequired',
+                        'message' => 'forms.registration.emailRequired',
                     ]),
                     new Length([
-                        'min' => 9,
-                        'minMessage' => 'forms.changeEmail.emailLength',
-                        'max' => 255,
+                        'min' => 6,
+                        'minMessage' => 'forms.length',
+                        'maxMessage' => 'forms.lengthX',
+                        'max' => 254,
                     ]),
                 ],
             ])

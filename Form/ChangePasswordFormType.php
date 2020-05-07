@@ -42,11 +42,12 @@ class ChangePasswordFormType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'forms.changePassword.passwordRequired',
+                        'message' => 'forms.registration.passwordRequired',
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'forms.changePassword.passwordLength',
+                        'minMessage' => 'forms.registration.emailLength',
+                        'maxMessage' => 'forms.lengthX',
                         'max' => 100,
                     ]),
                 ],
