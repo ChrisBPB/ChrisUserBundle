@@ -50,7 +50,7 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             $message = (new \Swift_Message($translator->trans('emails.registerTitle', [], 'ChrisUserBundle')))
-                ->setFrom("sponsor@powerbot.org")
+                ->setFrom("info@buycoins.store")
                 ->setTo(trim($user->getEmail()))
                 ->setBody(
                     $this->renderView(

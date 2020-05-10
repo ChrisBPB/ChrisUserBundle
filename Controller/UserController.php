@@ -49,7 +49,7 @@ class UserController extends AbstractController
                 $request->getSession()->set('emailTimer', $time);
 
                 $message = (new \Swift_Message($this->get('translator')->trans('emails.verifyEmailTitle', [], 'ChrisUserBundle')))
-                    ->setFrom("sponsor@powerbot.org")
+                    ->setFrom("info@buycoins.store")
                     ->setTo(trim($user->getEmail()))
                     ->setBody(
                         $this->renderView(
@@ -125,7 +125,7 @@ class UserController extends AbstractController
                 $entityManager->flush();
 
                 $message = (new \Swift_Message($this->get('translator')->trans('emails.changeEmailTitle', [], 'ChrisUserBundle')))
-                    ->setFrom("sponsor@powerbot.org")
+                    ->setFrom("info@buycoins.store")
                     ->setTo(trim($user->getEmail()))
                     ->setBody(
                         $this->renderView(

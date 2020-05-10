@@ -79,7 +79,7 @@ class SecurityController extends AbstractController
                 );
 
                 $message = (new \Swift_Message($this->get('translator')->trans('emails.changePasswordTitle', [], 'ChrisUserBundle')))
-                    ->setFrom("sponsor@powerbot.org")
+                    ->setFrom("info@buycoins.store")
                     ->setTo(trim($result->getEmail()))
                     ->setBody(
                         $this->renderView(

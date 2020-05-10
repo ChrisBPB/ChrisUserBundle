@@ -38,6 +38,11 @@ class RegistrationFormType extends AbstractType
                 'translation_domain' => 'ChrisUserBundle',
                 'label' => 'forms.registration.agreeToTerms',
                 'mapped' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'forms.required',
+                    ]),
+                ],
             ])
             ->add('agreeMarketing', CheckboxType::class, [
                 'translation_domain' => 'ChrisUserBundle',
