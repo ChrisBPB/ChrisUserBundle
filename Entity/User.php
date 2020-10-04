@@ -195,7 +195,7 @@ abstract class User implements UserInterface, EquatableInterface
         $this->email = trim($email);
         $this->emailValidated = false;
         $this->emailValidationCode = md5(uniqid());
-        $this->addRole(['ROLE_PENDING']);
+        $this->addRole('ROLE_PENDING');
     }
 
     /**
