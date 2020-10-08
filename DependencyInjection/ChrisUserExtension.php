@@ -40,6 +40,7 @@ class ChrisUserExtension extends Extension
         $registrationControllerDefinition = $container->findDefinition('Chris\ChrisUserBundle\Controller\RegistrationController');
         $registrationControllerDefinition->setArgument(0, $config['user_class']);
         $registrationControllerDefinition->setArgument(1, $config['register_form_class']);
+        $registrationControllerDefinition->setArgument(2, $config['email']);
         $registrationControllerDefinition->addTag("controller.service_arguments");
         $regDec = $config['registration_controller_class'];
         if($regDec!=null) {
@@ -48,6 +49,7 @@ class ChrisUserExtension extends Extension
 
         $securityControllerDefinition = $container->getDefinition('Chris\ChrisUserBundle\Controller\SecurityController');
         $securityControllerDefinition->setArgument(0, $config['user_class']);
+        $securityControllerDefinition->setArgument(1, $config['email']);
         $securityControllerDefinition->addTag("controller.service_arguments");
         $secDec = $config['security_controller_class'];
         if($secDec!=null) {
@@ -56,6 +58,7 @@ class ChrisUserExtension extends Extension
 
         $userControllerDefinition = $container->getDefinition('Chris\ChrisUserBundle\Controller\UserController');
         $userControllerDefinition->setArgument(0, $config['user_class']);
+        $userControllerDefinition->setArgument(1, $config['email']);
         $userControllerDefinition->addTag("controller.service_arguments");
         $usrDec = $config['user_controller_class'];
         if($secDec!=null) {

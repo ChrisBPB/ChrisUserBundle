@@ -31,6 +31,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('registration_controller_class')->defaultValue("Chris\ChrisUserBundle\Controller\RegistrationController")->end()
                 ->scalarNode('user_controller_class')->defaultValue("Chris\ChrisUserBundle\Controller\UserController")->end()
                 ->scalarNode('security_controller_class')->defaultValue("Chris\ChrisUserBundle\Controller\SecurityController")->end()
+                ->scalarNode('email')->defaultValue('noreply@mysite.com')->end()
             ->end();
 
 

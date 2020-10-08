@@ -17,12 +17,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class RegistrationController extends AbstractController
 {
 
-    private $user_class, $form;
+    private $user_class, $form, $email;
 
-    public function __construct($user_class, $form)
+    public function __construct($user_class, $form, $email)
     {
         $this->user_class = $user_class;
         $this->form = $form;
+        $this->email = $email;
     }
 
     /**
@@ -50,7 +51,7 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             $message = (new \Swift_Message($translator->trans('emails.registerTitle', [], 'ChrisUserBundle')))
-                ->setFrom("info@buycoins.store")
+                ->setFrom($this->email)
                 ->setTo(trim($user->getEmail()))
                 ->setBody(
                     $this->renderView(

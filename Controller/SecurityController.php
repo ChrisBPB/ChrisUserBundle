@@ -15,11 +15,12 @@ use Symfony\Component\Validator\Constraints\Date;
 class SecurityController extends AbstractController
 {
 
-    private $user_class;
+    private $user_class, $email;
 
-    public function __construct($user_class)
+    public function __construct($user_class, $email)
     {
         $this->user_class = $user_class;
+        $this->email = $email;
     }
 
     /**
@@ -79,7 +80,7 @@ class SecurityController extends AbstractController
                 );
 
                 $message = (new \Swift_Message($this->get('translator')->trans('emails.changePasswordTitle', [], 'ChrisUserBundle')))
-                    ->setFrom("info@buycoins.store")
+                    ->setFrom($this->email)
                     ->setTo(trim($result->getEmail()))
                     ->setBody(
                         $this->renderView(

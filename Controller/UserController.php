@@ -17,11 +17,12 @@ use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 class UserController extends AbstractController
 {
 
-    private $user_class;
+    private $user_class, $email;
 
-    public function __construct($user_class)
+    public function __construct($user_class, $email)
     {
         $this->user_class = $user_class;
+        $this->email = $email;
     }
 
     /**
@@ -49,7 +50,7 @@ class UserController extends AbstractController
                 $request->getSession()->set('emailTimer', $time);
 
                 $message = (new \Swift_Message($this->get('translator')->trans('emails.verifyEmailTitle', [], 'ChrisUserBundle')))
-                    ->setFrom("info@buycoins.store")
+                    ->setFrom($this->email)
                     ->setTo(trim($user->getEmail()))
                     ->setBody(
                         $this->renderView(
@@ -125,7 +126,7 @@ class UserController extends AbstractController
                 $entityManager->flush();
 
                 $message = (new \Swift_Message($this->get('translator')->trans('emails.changeEmailTitle', [], 'ChrisUserBundle')))
-                    ->setFrom("info@buycoins.store")
+                    ->setFrom($this->email)
                     ->setTo(trim($user->getEmail()))
                     ->setBody(
                         $this->renderView(
